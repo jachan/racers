@@ -2,13 +2,13 @@ var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
 var width = ctx.canvas.clientWidth;
 var height = ctx.canvas.clientHeight;
-var numOfLines = 40;
+var numOfLines = 50;
 var gridSize = Math.floor(width / numOfLines);
 var gameOn = true;
 var gameState = "input"; //input, display
 var rec1 = false; //if player 1's move has been receieved
 var rec2 = false; //if player 2's move has been received
-var xstart = Math.floor(numOfLines*.75) * gridSize;
+var xstart = Math.floor(numOfLines*0.75) * gridSize;
 var ystart = Math.floor(numOfLines*0.5) * gridSize;
 var input1;
 var input2;
@@ -107,38 +107,51 @@ function drawTrack(){
     ctx.stroke();
 }
 
-function collision(x,y){
-    //distance to lower bottom edge
-    //code from https://stackoverflow.com/questions/36663160/collision-detection-of-a-ball-with-an-arc#36717254
-    var dx = x-((rightBound+leftBound)/2);
+//function checks collision with the different walls
+//function returns the intersection of the wall with the path
+function collision(oldx, oldy, x, y){
+    var middlex = ((rightBound+leftBound)/2);
+    var dx = x-middlex;
     var botDist = Math.sqrt(Math.pow(dx,2) + Math.pow(y-downPoint,2));
     var topDist = Math.sqrt(Math.pow(dx,2) + Math.pow(y-upPoint,2));
-    var dir0 = Math.atan2(y-downPoint,dx) + Math.asin(2/botDist);
-    var dir1 = Math.atan2(y-downPoint,dx) - Math.asin(2/botDist);
-    var dir2 = Math.atan2(y-upPoint,dx) + Math.asin(2/topDist);
-    var dir3 = Math.atan2(y-upPoint,dx) - Math.asin(2/topDist);
-    if(x<=leftBound || x>=rightBound){
-        alert("1")
+
+    //checks left outer wall
+    if(x<=leftBound){
         return true;
     }
-    //checks the bottom
-    if (botDist > innerRad-2 && botDist-2 < outerRad)
-    {
-        if ((dir0 > 0 && dir0 < Math.PI) || (dir1 > 0 && dir1 < Math.PI))
-            return true;
-    }
-    //checks the top
-    if (topDist > innerRad && topDist < outerRad)
-    {
-        if ((dir2 > Math.PI && dir2 < 2*Math.PI) || (dir3 > Math.PI && dir3 < 2*Math.PI))
-            return true;
-    }
-    if(x<=rightBound-sideWidth && x>=leftBound+sideWidth && ((!y>=upPoint) || (!y<=downPoint))){
-        alert("4");
+    //checks right outer wall
+    if(x>=rightBound){
         return true;
+    }
+    //checks the bottom inner curve
+    if (botDist <= innerRad && (y>=downPoint))
+    {
+        return true;
+    }
+    //checks the bottom outer curve
+    if(botDist >= outerRad && y>=downPoint){
+        return true;
+    }
+    //checks the top inner curve
+    if (topDist <= innerRad && (y<=upPoint))
+    {
+        return true;
+    }
+    //checks the top outer curve
+    if(topDist > outerRad && y<upPoint){
+        return true;
+    }
+    //checks right inner wall
+    if(x<=rightBound-sideWidth && x>=middlex && (y>upPoint) && (y<downPoint)){
+        return true;
+    }
+    //checks left inner wall
+    if(x>=leftBound+sideWidth && x<=middlex && (y>upPoint) && (y<downPoint)){
+       return true; 
     }
     return false;
 }
+
 
 function updateCar(oldx, oldy, x, y, color){
     ctx.beginPath();
@@ -171,6 +184,10 @@ function inputHandler(e){
                 rec1 = true;
                 break;
             case "s":
+                input1 = "noaccel";
+                rec1 = true;
+                break;
+            case "x":
                 input1 = "s";
                 yvel1++;
                 rec1 = true;
@@ -219,7 +236,11 @@ function inputHandler(e){
                 xvel2--;
                 rec2 = true;
                 break;
-            case "k":
+             case "k":
+                input2 = "noaccel";
+                rec2 = true;
+                break;
+            case ",":
                 input2 = "s";
                 yvel2++;
                 rec2 = true;
@@ -282,7 +303,7 @@ function run(){
         var newy1 = y1 + yvel1 * gridSize;
         var newx2 = x2 + xvel2 * gridSize;
         var newy2 = y2 + yvel2 * gridSize;
-        if(!collision(newx1, newy1)){
+        if(!collision(oldx1, oldx2, newx1, newy1)){
             x1 = newx1;
             y1 = newy1;
             updateCar(oldx1, oldy1, x1, y1, "red");
@@ -290,10 +311,11 @@ function run(){
         }
         else{
             alert("player 1 crashed at " + newx1 + " , " + newy1);
+            updateCar(oldx1, oldy1, newx1, newy1, "orange");
             xvel1 = 0;
             yvel1 = 0;
         }
-        if(!collision(newx2, newy2)){
+        if(!collision(oldx2, oldy2, newx2, newy2)){
             x2 = newx2;
             y2 = newy2;
             updateCar(oldx2, oldy2, x2, y2, "blue");
@@ -301,6 +323,7 @@ function run(){
         }
         else{
             alert("player 2 crashed at " + newx2 + " , " + newy2);
+            updateCar(oldx2, oldy2, newx2, newy2, "orange");
             xvel2 = 0;
             yvel2 = 0;
         }
