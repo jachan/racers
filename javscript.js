@@ -150,7 +150,7 @@ function collision(oldx, oldy, x, y){
         return [x,y];
     }
     //checks the top outer curve
-    if(topDist > outerRad && y<upPoint){
+    if(topDist >= outerRad && y<=upPoint){
         alert("6")
         return [x,y];
     }
