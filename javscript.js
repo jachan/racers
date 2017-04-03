@@ -4,6 +4,7 @@ var width = ctx.canvas.clientWidth;
 var height = ctx.canvas.clientHeight;
 var numOfLines = 50;
 var gridSize = Math.floor(width / numOfLines);
+var sideWidth = 7*gridSize;
 var gameOn = true;
 var gameState = "input"; //input, display
 var rec1 = false; //if player 1's move has been receieved
@@ -58,9 +59,9 @@ var leftBound = (Math.floor(numOfLines*.20))*gridSize;
 var rightBound = Math.floor(numOfLines*.80)*gridSize;
 var downPoint = Math.floor(numOfLines*.70)*gridSize;
 var upPoint = Math.floor(numOfLines*.30)*gridSize;
-var sideWidth = 6*gridSize;
 var innerRad = (rightBound-leftBound-2*sideWidth)/2;
 var outerRad =  (rightBound-leftBound)/2;
+var finishLine = Math.floor(numOfLines*.60)*gridSize;
 function drawTrack(){
     //left side
     ctx.beginPath();
@@ -105,6 +106,12 @@ function drawTrack(){
     ctx.beginPath();
     ctx.arc((rightBound+leftBound)/2, upPoint, innerRad, Math.PI, 2*Math.PI);
     ctx.stroke();
+    
+    //finish line
+    ctx.beginPath();
+    ctx.moveTo(rightBound, ystart-gridSize);
+    ctx.lineTo(rightBound-sideWidth, ystart-gridSize);
+    ctx.stroke();
 }
 
 //function checks collision with the different walls
@@ -117,39 +124,86 @@ function collision(oldx, oldy, x, y){
 
     //checks left outer wall
     if(x<=leftBound){
-        return true;
+        alert("1");
+        return lineIntersect(oldx, oldy, x, y, leftBound, upPoint, leftBound, downPoint);
     }
     //checks right outer wall
     if(x>=rightBound){
-        return true;
+        alert("2");
+        return lineIntersect(oldx, oldy, x, y, rightBound, upPoint, rightBound, downPoint);
     }
     //checks the bottom inner curve
     if (botDist <= innerRad && (y>=downPoint))
     {
-        return true;
+        alert("3");
+        return [x, y];
     }
     //checks the bottom outer curve
     if(botDist >= outerRad && y>=downPoint){
-        return true;
+        alert("4")
+        return [x, y];
     }
     //checks the top inner curve
     if (topDist <= innerRad && (y<=upPoint))
     {
-        return true;
+        alert("5")
+        return [x,y];
     }
     //checks the top outer curve
     if(topDist > outerRad && y<upPoint){
-        return true;
+        alert("6")
+        return [x,y];
     }
     //checks right inner wall
-    if(x<=rightBound-sideWidth && x>=middlex && (y>upPoint) && (y<downPoint)){
-        return true;
+    if(x<=rightBound-sideWidth && x>=middlex && (y>=upPoint) && (y<=downPoint)){
+        alert("7")
+        return lineIntersect(oldx, oldy, x, y, rightBound-sideWidth, upPoint, rightBound-sideWidth, downPoint);
+
     }
     //checks left inner wall
-    if(x>=leftBound+sideWidth && x<=middlex && (y>upPoint) && (y<downPoint)){
-       return true; 
+    if(x>=leftBound+sideWidth && x<=middlex && (y>=upPoint) && (y<=downPoint)){
+        alert("8")
+        return lineIntersect(oldx, oldy, x, y, leftBound+sideWidth, upPoint, leftBound+sideWidth, downPoint);
     }
-    return false;
+    return [null,null];
+}
+
+//adapted from https://jsfiddle.net/justin_c_rounds/Gd2S2/light/
+function lineIntersect(oldx, oldy, newx, newy, startx, starty, endx, endy){
+    var denominator, a, b, numerator1, numerator2, result = {
+        x: null,
+        y: null,
+        onLine1: false,
+        onLine2: false };
+    denominator = ((endy - starty) * (newx - oldx)) - ((endx - startx) * (newy - oldy));
+    if (denominator == 0) {
+        return [null, null];
+    }
+    a = oldy - starty;
+    b = oldx - startx;
+    numerator1 = ((endx - startx) * a) - ((endy - starty) * b);
+    numerator2 = ((newx - oldx) * a) - ((newy - oldy) * b);
+    a = numerator1 / denominator;
+    b = numerator2 / denominator;
+
+    // if we cast these lines infinitely in both directions, they intersect here:
+    result.x = oldx + (a * (newx - oldx));
+    result.y = oldy + (a * (newy - oldy));
+    // if line1 is a segment and line2 is infinite, they intersect if:
+    if (a >= 0 && a <= 1) {
+        result.onLine1 = true;
+    }
+    // if line2 is a segment and line1 is infinite, they intersect if:
+    if (b >= 0 && b <= 1) {
+        result.onLine2 = true;
+    }
+    // if line1 and line2 are segments, they intersect if both of the above are true
+    if(result.onLine1 && result.onLine2){
+        return [result.x,result.y];
+    }
+    else{
+        return [null,null];
+    }
 }
 
 
@@ -222,7 +276,6 @@ function inputHandler(e){
                 rec1 = true;
                 break;
             }
-            document.getElementById("move1").innerHTML = input1;
         }
         if (!rec2) {
             switch (actualkey) {
@@ -275,21 +328,32 @@ function inputHandler(e){
                 rec2 = true;
                 break;
             }
-            document.getElementById("move2").innerHTML = input2;
-
+        }
+        if(rec1){
+            document.getElementById("status1").style.backgroundColor = 'green';
+        }
+        if(rec2){
+            document.getElementById("status2").style.backgroundColor = 'green';
         }
         if(rec1 && rec2){
-            gameState = "display";
+            setTimeout(reset, 300);   
         }
     }
+}
+function reset(){
+    gameState = "display";
+    document.getElementById("status1").style.backgroundColor = 'grey';   
+    document.getElementById("status2").style.backgroundColor = 'grey';
 }
 document.onkeypress = inputHandler;
 drawGrid();
 drawTrack();
 var col1 = false;
 var col2 = false;
+var cheater1 = true;
+var cheater2 = true;
+
 function run(){
-    document.getElementById("state").innerHTML = gameState;
     if (gameState == "input") {
         input1 = "";
         input2 = "";
@@ -303,29 +367,34 @@ function run(){
         var newy1 = y1 + yvel1 * gridSize;
         var newx2 = x2 + xvel2 * gridSize;
         var newy2 = y2 + yvel2 * gridSize;
-        if(!collision(oldx1, oldx2, newx1, newy1)){
+        var crashPos1 = collision(oldx1, oldy1, newx1, newy1);
+        var crashPos2 = collision(oldx2, oldy2, newx2, newy2);
+
+        if(crashPos1[0] == null && crashPos1[1] == null){
             x1 = newx1;
             y1 = newy1;
             updateCar(oldx1, oldy1, x1, y1, "red");
             rec1 = false;
         }
         else{
-            alert("player 1 crashed at " + newx1 + " , " + newy1);
-            updateCar(oldx1, oldy1, newx1, newy1, "orange");
+            alert("player 1 crashed at " + crashPos1[0] + " , " + crashPos1[1]);
+            updateCar(oldx1, oldy1, crashPos1[0], crashPos1[1], "orange");
             xvel1 = 0;
             yvel1 = 0;
+            document.getElementById("status1").style.backgroundColor = 'orange';   
         }
-        if(!collision(oldx2, oldy2, newx2, newy2)){
+        if(crashPos2[0] == null && crashPos2[1] == null){
             x2 = newx2;
             y2 = newy2;
             updateCar(oldx2, oldy2, x2, y2, "blue");
             rec2 = false;
         }
         else{
-            alert("player 2 crashed at " + newx2 + " , " + newy2);
-            updateCar(oldx2, oldy2, newx2, newy2, "orange");
+            alert("player 2 crashed at " + crashPos2[0] + " , " + crashPos2[1]);
+            updateCar(oldx2, oldy2, crashPos2[0], crashPos2[1], "orange");
             xvel2 = 0;
             yvel2 = 0;
+            document.getElementById("status2").style.backgroundColor = 'orange';
         }
         gameState = "input";
     }
