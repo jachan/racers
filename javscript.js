@@ -1,4 +1,4 @@
-var c = document.getElementById("myCanvas");
+var c = document.getElementById("my-canvas");
 var ctx = c.getContext("2d");
 var width = ctx.canvas.clientWidth;
 var height = ctx.canvas.clientHeight;
@@ -20,8 +20,8 @@ var yvel2 = 0;
 var x1 = xstart;
 var y1 = ystart;
 var x2 = xstart + gridSize;
-var y2 = ystart;
 
+var y2 = ystart;
 
 function drawGrid() {
     //draws vertical lines
@@ -44,13 +44,13 @@ function drawGrid() {
     
     //draws player 1
     ctx.beginPath();
-    ctx.arc(x1, y1, 2, 0, 2 * Math.PI);
+    ctx.arc(x1, y1, 4, 0, 2 * Math.PI);
     ctx.fillStyle="red";
     ctx.fill();
     
     //draws player 2
     ctx.beginPath();
-    ctx.arc(x2, y2, 2, 0, 2 * Math.PI);
+    ctx.arc(x2, y2, 4, 0, 2 * Math.PI);
     ctx.fillStyle="blue";
     ctx.fill();
 }

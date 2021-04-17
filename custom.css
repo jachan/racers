@@ -1,0 +1,30 @@
+div#player1-status{
+    margin-right: 50px;
+}
+
+div#player2-status{
+    margin-left: 50px;
+}
+
+.player-name {
+    padding-left: 10px;
+}
+
+.square-button{
+    width: 40px !important;
+    height: 40px !important;
+}
+
+.dot {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-bar {
+    margin-top: 10px;
+    height: 30px;
+    width: 120px;
+    display: inline-block;
+}
