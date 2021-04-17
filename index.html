@@ -5,66 +5,24 @@
 	<link rel="stylesheet" href="./custom.css" type="text/css">
 </head>
 <body>
-	<div id="root">
-		<div class="App">
-			<head>
+    <div id="root" style="height: 100vh;">
+		<div class="App" class="d-flex justify-content-center align-items-center" style="background: beige;">
+        	<head>
 				<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 				<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 				<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 				<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+                <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'  type='text/css'>
 			</head>
-			<div class="screen d-flex justify-content-center align-items-center">
-				<div id="player1-status">
-					<div class="row justify-content-center align-items-baseline">	
-						<span class="dot" style="background-color: red;"></span>
-						<p class="player-name">Player One</p>
-					</div>
-					<div class="row no-gutters">
-						<div class="col"><button type="button" class="square-button btn btn-outline-secondary">Q</button></div>
-						<div class="col"><button type="button" class="square-button btn btn-outline-secondary">W</button></div>
-						<div class="col"><button type="button" class="square-button btn btn-outline-secondary">E</button></div>
-					</div>
-					<div class="row no-gutters">
-						<div class="col"><button type="button" class="square-button btn btn-outline-secondary">A</button></div>
-						<div class="col"><button type="button" class="square-button btn btn-outline-secondary">S</button></div>
-						<div class="col"><button type="button" class="square-button btn btn-outline-secondary">D</button></div>
-					</div>
-					<div class="row no-gutters">
-						<div class="col"><button type="button" class="btn btn-outline-secondary square-button">Z</button></div>
-						<div class="col"><button type="button" class="square-button btn btn-outline-secondary">X</button></div>
-						<div class="col"><button type="button" class="square-button btn btn-outline-secondary">C</button></div>
-					</div>
-					<span id="status1" class="status-bar" style="background-color: gray"></span>
-				</div>
-				<div class="gameboard">
-					<canvas id="my-canvas" width="850" height="901"></canvas>
-				</div>
-				
-				<div id="player2-status">
-					<div class="row justify-content-center align-items-baseline">	
-						<span class="dot" style="background-color: blue;"></span>
-						<p class="player-name">Player Two</p>
-					</div>
-					<div class="row no-gutters">
-						<div class="col"><button type="button" class="square-button btn btn-outline-secondary">U</button></div>
-						<div class="col"><button type="button" class="square-button btn btn-outline-secondary">I</button></div>
-						<div class="col"><button type="button" class="square-button btn btn-outline-secondary">O</button></div>
-					</div>
-					<div class="row no-gutters">
-						<div class="col"><button type="button" class="square-button btn btn-outline-secondary">J</button></div>
-						<div class="col"><button type="button" class="square-button btn btn-outline-secondary">K</button></div>
-						<div class="col"><button type="button" class="square-button btn btn-outline-secondary">L</button></div>
-					</div>
-					<div class="row no-gutters">
-						<div class="col"><button type="button" class="btn btn-outline-secondary square-button">M</button></div>
-						<div class="col"><button type="button" class="square-button btn btn-outline-secondary">,</button></div>
-						<div class="col"><button type="button" class="square-button btn btn-outline-secondary">.</button></div>
-					</div>
-                    <span id="status2" class="status-bar" style="background-color: gray"></span>
-				</div>
-			</div>
-		</div>
-	</div>
-    <script src="javscript.js"></script>
+            <div class="col screen d-flex justify-content-center align-items-center" style="height: 100vh; flex-direction: column;">
+                    <div class = "row">
+                        <h1 id="title">RACERS</h1>
+                    </div>
+                    <div class = "row" >
+                        <a href="./instructions.html"><button id="zoom" type="button" class= "btn btn-secondary">zoom zoom</button></a>
+                    </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

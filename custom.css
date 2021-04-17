@@ -6,6 +6,20 @@ div#player2-status{
     margin-left: 50px;
 }
 
+h1#title {
+    font-family: Helvetica, sans-serif;
+    font-size: 10vw;
+}
+
+h2#zoom {
+    font-family: Roboto, sans-serif;
+    font-size: 2hw;
+}
+
+h1#instructions {
+    margin-bottom: 20px;
+}
+
 .player-name {
     padding-left: 10px;
 }

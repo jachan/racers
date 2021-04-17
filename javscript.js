@@ -5,6 +5,7 @@ var height = ctx.canvas.clientHeight;
 var numOfLines = 50;
 var gridSize = Math.floor(width / numOfLines);
 var sideWidth = 7*gridSize;
+var carRadius = 4;
 var gameOn = true;
 var gameState = "input"; //input, display
 var legalPosition = {} // hashSet of all legal moves on map
@@ -45,13 +46,13 @@ function drawGrid() {
     
     //draws player 1
     ctx.beginPath();
-    ctx.arc(x1, y1, 4, 0, 2 * Math.PI);
+    ctx.arc(x1, y1, carRadius, 0, 2 * Math.PI);
     ctx.fillStyle="red";
     ctx.fill();
     
     //draws player 2
     ctx.beginPath();
-    ctx.arc(x2, y2, 4, 0, 2 * Math.PI);
+    ctx.arc(x2, y2, carRadius, 0, 2 * Math.PI);
     ctx.fillStyle="blue";
     ctx.fill();
 }
@@ -174,7 +175,7 @@ function updateCar(oldx, oldy, x, y, color){
     ctx.stroke();
     
     ctx.beginPath();
-    ctx.arc(x, y, 2, 0, 2 * Math.PI);
+    ctx.arc(x, y, carRadius, 0, 2 * Math.PI);
     ctx.fillStyle=color;
     ctx.fill();
 }
