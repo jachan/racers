@@ -7,6 +7,7 @@ var gridSize = Math.floor(width / numOfLines);
 var sideWidth = 7*gridSize;
 var gameOn = true;
 var gameState = "input"; //input, display
+var legalPosition = {} // hashSet of all legal moves on map
 var rec1 = false; //if player 1's move has been receieved
 var rec2 = false; //if player 2's move has been received
 var xstart = Math.floor(numOfLines*0.75) * gridSize;
@@ -116,7 +117,7 @@ function drawTrack(){
 
 //function checks collision with the different walls
 //function returns the intersection of the wall with the path
-function collision(oldx, oldy, x, y){
+function collision(x, y){
     var middlex = ((rightBound+leftBound)/2);
     var dx = x-middlex;
     var botDist = Math.sqrt(Math.pow(dx,2) + Math.pow(y-downPoint,2));
@@ -124,88 +125,46 @@ function collision(oldx, oldy, x, y){
 
     //checks left outer wall
     if(x<=leftBound){
-        alert("1");
-        return lineIntersect(oldx, oldy, x, y, leftBound, upPoint, leftBound, downPoint);
+        return true;
     }
     //checks right outer wall
     if(x>=rightBound){
-        alert("2");
-        return lineIntersect(oldx, oldy, x, y, rightBound, upPoint, rightBound, downPoint);
+        return true;
     }
     //checks the bottom inner curve
     if (botDist <= innerRad && (y>=downPoint))
     {
-        alert("3");
-        return [x, y];
+        return true;
     }
     //checks the bottom outer curve
     if(botDist >= outerRad && y>=downPoint){
-        alert("4")
-        return [x, y];
+        return true;
     }
     //checks the top inner curve
     if (topDist <= innerRad && (y<=upPoint))
     {
-        alert("5")
-        return [x,y];
+        return true;
     }
     //checks the top outer curve
     if(topDist >= outerRad && y<=upPoint){
-        alert("6")
-        return [x,y];
+        return true;
     }
     //checks right inner wall
     if(x<=rightBound-sideWidth && x>=middlex && (y>=upPoint) && (y<=downPoint)){
-        alert("7")
-        return lineIntersect(oldx, oldy, x, y, rightBound-sideWidth, upPoint, rightBound-sideWidth, downPoint);
+        return true;
 
     }
     //checks left inner wall
     if(x>=leftBound+sideWidth && x<=middlex && (y>=upPoint) && (y<=downPoint)){
-        alert("8")
-        return lineIntersect(oldx, oldy, x, y, leftBound+sideWidth, upPoint, leftBound+sideWidth, downPoint);
+        return true;
     }
-    return [null,null];
+    return false;
 }
 
-//adapted from https://jsfiddle.net/justin_c_rounds/Gd2S2/light/
-function lineIntersect(oldx, oldy, newx, newy, startx, starty, endx, endy){
-    var denominator, a, b, numerator1, numerator2, result = {
-        x: null,
-        y: null,
-        onLine1: false,
-        onLine2: false };
-    denominator = ((endy - starty) * (newx - oldx)) - ((endx - startx) * (newy - oldy));
-    if (denominator == 0) {
-        return [null, null];
-    }
-    a = oldy - starty;
-    b = oldx - startx;
-    numerator1 = ((endx - startx) * a) - ((endy - starty) * b);
-    numerator2 = ((newx - oldx) * a) - ((newy - oldy) * b);
-    a = numerator1 / denominator;
-    b = numerator2 / denominator;
-
-    // if we cast these lines infinitely in both directions, they intersect here:
-    result.x = oldx + (a * (newx - oldx));
-    result.y = oldy + (a * (newy - oldy));
-    // if line1 is a segment and line2 is infinite, they intersect if:
-    if (a >= 0 && a <= 1) {
-        result.onLine1 = true;
-    }
-    // if line2 is a segment and line1 is infinite, they intersect if:
-    if (b >= 0 && b <= 1) {
-        result.onLine2 = true;
-    }
-    // if line1 and line2 are segments, they intersect if both of the above are true
-    if(result.onLine1 && result.onLine2){
-        return [result.x,result.y];
-    }
-    else{
-        return [null,null];
-    }
+function isLegalMove(x, y) {
+    var hash = [x.toString(), y.toString()].join();
+        return legalPosition[hash]
 }
-
 
 function updateCar(oldx, oldy, x, y, color){
     ctx.beginPath();
@@ -345,9 +304,21 @@ function reset(){
     document.getElementById("status1").style.backgroundColor = 'grey';   
     document.getElementById("status2").style.backgroundColor = 'grey';
 }
+
+function buildCollisionHashSet() {
+    // iterates through all points to construct set of valid points 
+    for (x = 0; x <= width; x += gridSize) {
+        for (y = 0; y <= height; y += gridSize) {
+            var hash = [x.toString(), y.toString()].join();
+            legalPosition[hash] = !collision(x,y);
+        }    
+    }
+}
+
 document.onkeypress = inputHandler;
 drawGrid();
 drawTrack();
+buildCollisionHashSet();
 var col1 = false;
 var col2 = false;
 var cheater1 = true;
@@ -367,31 +338,29 @@ function run(){
         var newy1 = y1 + yvel1 * gridSize;
         var newx2 = x2 + xvel2 * gridSize;
         var newy2 = y2 + yvel2 * gridSize;
-        var crashPos1 = collision(oldx1, oldy1, newx1, newy1);
-        var crashPos2 = collision(oldx2, oldy2, newx2, newy2);
-
-        if(crashPos1[0] == null && crashPos1[1] == null){
+        
+        if(isLegalMove(newx1, newy1)){
             x1 = newx1;
             y1 = newy1;
             updateCar(oldx1, oldy1, x1, y1, "red");
             rec1 = false;
         }
         else{
-            alert("player 1 crashed at " + crashPos1[0] + " , " + crashPos1[1]);
-            updateCar(oldx1, oldy1, crashPos1[0], crashPos1[1], "orange");
+            alert("KABLOOIE! Player 1 crashed! They lost their next turn and their position and speed were reset.");
+            updateCar(oldx1, oldy1, newx1, newy1, "orange");
             xvel1 = 0;
             yvel1 = 0;
             document.getElementById("status1").style.backgroundColor = 'orange';   
         }
-        if(crashPos2[0] == null && crashPos2[1] == null){
+        if(isLegalMove(newx2, newy2)){
             x2 = newx2;
             y2 = newy2;
             updateCar(oldx2, oldy2, x2, y2, "blue");
             rec2 = false;
         }
         else{
-            alert("player 2 crashed at " + crashPos2[0] + " , " + crashPos2[1]);
-            updateCar(oldx2, oldy2, crashPos2[0], crashPos2[1], "orange");
+            alert("WHAMOO! Player 2 crashed! They lost their next turn and their position and speed were reset.");
+            updateCar(oldx2, oldy2, newx2, newy2, "orange");
             xvel2 = 0;
             yvel2 = 0;
             document.getElementById("status2").style.backgroundColor = 'orange';
