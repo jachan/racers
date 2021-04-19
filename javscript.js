@@ -28,6 +28,13 @@ var x2 = xstart + gridSize;
 
 var y2 = yStart;
 
+// for those brilliant privacy experts who disable cookies, this allows the page to load.
+try {
+    sessionStorage.clear()
+} catch (e) {
+    
+}
+
 function drawGrid() {
     //draws vertical lines
     for (i = 0; i <= width; i += gridSize) {
@@ -340,12 +347,22 @@ function updateCheckpoints(x, y, checkpointArr) {
 }
 
 function checkWinStatus() {
+    var msg = ""
     if (checkpoints1[3] && checkpoints2[3]) {
-        alert("Oh my god. We have a tie!")
+        msg = "It's -- it's unprecendented...We have a tie!"
     } else if (checkpoints1[3]) {
-        alert("Player 1 wins! I guess they're just BETTER. I hear the McLaren race team is hiring!")
+        msg = "Player 1 wins! I guess they're just BETTER.<br>I hear the McLaren race team is hiring!"
     } else if (checkpoints2[3]) {
-        alert("Player 2 wins! They must be BUILT DIFFERENT. Have you considered going pro?")
+        msg = "Player 2 wins! They must be BUILT DIFFERENT.<br>Have you considered going pro?"
+    }
+    if (msg != ""){
+        // for those brilliant privacy experts who disable cookies, this allows an alternate way to display the win message.
+        try {
+            sessionStorage.setItem("SECURITY_THROUGH_OBSCURITY", msg);
+            window.location.replace("./win.html");
+        } catch {
+            alert(msg)
+        }
     }
 }
 
