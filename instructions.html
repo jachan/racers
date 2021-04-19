@@ -5,7 +5,7 @@
 	<link rel="stylesheet" href="./custom.css" type="text/css">
 </head>
 <body>
-    <div id="root" style="height: 100vh;">
+    <div id="root" style="height: 100vh; background: beige;">
 		<div class="App" class="d-flex justify-content-center align-items-center" style="background: beige;">
         	<head>
 				<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
@@ -14,31 +14,36 @@
 				<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
                 <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'  type='text/css'>
 			</head>
-            <div class="screen d-flex justify-content-center align-items-center" style="height: 100vh; flex-direction: column;">
-                    <div class = "row">
-                        <h1 id="instructions">Instructions</h1>
-                    </div>
-                    <div>
-                        <p>
-                            Grab a friend and sit down together to play Racers, the most accurate racing sim on the planet.<br> 
-                            The two of you will pilot race-cars through hairpin turns and hair-raising courses.<br>
-                            Compete to see who will be the true RACER.<br>
-                            <br>
-                            Racers is a turn-based racing game where speed and momentum matter. Each turn, both players will select a <br>
-                            direction to accelerate using their corresponding keyboard keys. <br>
-                            <br>
-                            Players each will have a bar showing their status. <br>
-                            Gray will indicate that no accleration has been chosen for the turn yet. <br>
-                            Green shows the player has locked in their choice for the turn. <br>
-                            Orange indicates a crash. The player will lose their next turn and be reset to their previous position. <br>
-                           <br>
-                            Be speedy, be wily, but most of all, be careful not to crash! <br>
-                            Will you master the art of the drift, or suffer a fate worse than death -- Second Place? 
-                        </p>
-                    </div>
-                    <div class = "row" >
-                        <a href="./racers.html"><button id="zoom" type="button" class= "btn btn-secondary">Let's Go!</button></a>
-                    </div>
+            <div class="display-block d-flex justify-content-center align-items-center">
+                <a href ="/index.html">
+                <button class="btn">
+                    <h1 class="logo">MAKING<br/>&nbsp;&nbsp;&nbsp;&nbsp;TURNS</h1>
+                </button>
+                </a>
+            </div>
+            <div class="screen d-flex justify-content-center align-items-center" style="height: 70vh; flex-direction: column;">
+                <div>
+                    <h1 id="instructions">Instructions</h1>
+                    <p>
+                        Grab a friend and sit down together to play Racers, the most thrilling racing sim on the planet.<br> 
+                        The two of you will pilot race-cars through hairpin turns and hair-raising courses.<br>
+                        Compete to see who will be crowned the champion!<br>
+                        <br>
+                        Racers is a turn-based racing game where speed and momentum matter. Each turn, both players will select a <br>
+                        direction to accelerate using their corresponding keyboard keys. <br>
+                        <br>
+                        Players each will have a bar showing their status. <br>
+                        - Gray indicates that no accleration has been chosen for the turn yet. <br>
+                        - Green indicates that the player has locked in their choice for the turn. <br>
+                        - Orange indicates a crash. The player will lose their next turn and be reset to their previous position. <br>
+                       <br>
+                        Be speedy, be wily, but most of all, be careful not to crash! <br>
+                        Will you master the art of the drift, or suffer a fate worse than death -- Second Place? 
+                    </p>
+                </div>
+                <div class = "row" style="margin-top: 5vh;">
+                    <a href="./racers.html"><button id="zoom" type="button" class= "btn btn-dark btn-lg">Let's Race!</button></a>
+                </div>
             </div>
         </div>
     </div>

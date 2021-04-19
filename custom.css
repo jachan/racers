@@ -6,14 +6,20 @@ div#player2-status{
     margin-left: 50px;
 }
 
-h1#title {
+h1.title {
     font-family: Helvetica, sans-serif;
     font-size: 10vw;
 }
 
-h2#zoom {
+h1.logo {
+    font-family: Helvetica, sans-serif;
+    font-size: 1vw;
+}
+
+.play-btn {
     font-family: Roboto, sans-serif;
-    font-size: 2hw;
+    font-size: 6hw;
+    margin-top: 5vh;
 }
 
 h1#instructions {
@@ -25,8 +31,8 @@ h1#instructions {
 }
 
 .square-button{
-    width: 40px !important;
-    height: 40px !important;
+    width: 40px;
+    height: 40px;
 }
 
 .dot {

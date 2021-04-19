@@ -5,8 +5,8 @@
 	<link rel="stylesheet" href="./custom.css" type="text/css">
 </head>
 <body>
-    <div id="root" style="height: 100vh;">
-		<div class="App" class="d-flex justify-content-center align-items-center" style="background: beige;">
+    <div id="root" style="height: 100vh; background: beige;">
+		<div class="App" class="d-flex justify-content-center align-items-center">
         	<head>
 				<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 				<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -15,12 +15,15 @@
                 <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'  type='text/css'>
 			</head>
             <div class="col screen d-flex justify-content-center align-items-center" style="height: 100vh; flex-direction: column;">
-                    <div class = "row">
-                        <h1 id="title">RACERS</h1>
+                <div class="row">
+                    <div class="row">
+                        <h1 class="title">MAKING<br/>&nbsp;&nbsp;&nbsp;&nbsp;TURNS</h1>
                     </div>
-                    <div class = "row" >
-                        <a href="./instructions.html"><button id="zoom" type="button" class= "btn btn-secondary">zoom zoom</button></a>
-                    </div>
+                </div>
+                <div class = "row" style="margin-top: 5vh">
+                        <a href="./instructions.html"><button type="button" class= "btn btn-dark btn-lg">INSTRUCTIONS</button></a>
+                        <a href="./racers.html"><button type="button" class= "btn btn-dark btn-lg" style="margin-left:2vw">PLAY</button></a>                
+                </div>
             </div>
         </div>
     </div>
