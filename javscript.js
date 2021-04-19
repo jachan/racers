@@ -381,6 +381,7 @@ function run() {
         input2 = "";
     }
     if (gameState == "display") {
+        gameState = "input";
         var oldx1 = x1;
         var oldy1 = y1;
         var oldx2 = x2;
@@ -417,7 +418,6 @@ function run() {
         updateCheckpoints(x1, y1, checkpoints1)
         updateCheckpoints(x2, y2, checkpoints2)
         checkWinStatus()
-        gameState = "input";
     }
 }
 
